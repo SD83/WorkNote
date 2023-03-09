@@ -1,6 +1,6 @@
 #########03/06/2023###########
-github token
-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
+personal github token
+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
 
 https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
 
