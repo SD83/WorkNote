@@ -109,3 +109,8 @@ kubectl --kubeconfig /Users/soumikdas/work/Rancher/cpe6041nkep.yaml --namespace 
 
 
 kafka-0.kafka-headless.esb.svc.cluster.local:9092
+
+############ AKS Cluster ##############
+
+az group create --name K8S --location eastus ; az aks create -g K8S -n aksdemocluster --enable-managed-identity --node-count 3 --enable-addons monitoring --enable-msi-auth-for-monitoring  --generate-ssh-keys;rm /Users/soumikdas/work/Rancher/aksconfig.yaml;az aks get-credentials --resource-group K8S --name aksdemocluster --file /Users/soumikdas/work/Rancher/aksconfig.yaml
+
