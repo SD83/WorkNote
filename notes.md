@@ -1,6 +1,6 @@
 #########03/06/2023###########
 personal github token
-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
+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
 
 https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
 
@@ -113,4 +113,8 @@ kafka-0.kafka-headless.esb.svc.cluster.local:9092
 ############ AKS Cluster ##############
 
 az group create --name K8S --location eastus ; az aks create -g K8S -n aksdemocluster --enable-managed-identity --node-count 3 --enable-addons monitoring --enable-msi-auth-for-monitoring  --generate-ssh-keys;rm /Users/soumikdas/work/Rancher/aksconfig.yaml;az aks get-credentials --resource-group K8S --name aksdemocluster --file /Users/soumikdas/work/Rancher/aksconfig.yaml
+
+kubectl label namespace default istio-injection=enabled
+
+
 

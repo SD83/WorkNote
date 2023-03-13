@@ -1,0 +1,2 @@
+webapp:
+  numberOfWebAppReplicas: 4
