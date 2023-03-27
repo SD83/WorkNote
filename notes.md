@@ -114,7 +114,43 @@ kafka-0.kafka-headless.esb.svc.cluster.local:9092
 
 az group create --name K8S --location eastus ; az aks create -g K8S -n aksdemocluster --enable-managed-identity --node-count 3 --enable-addons monitoring --enable-msi-auth-for-monitoring  --generate-ssh-keys;rm /Users/soumikdas/work/Rancher/aksconfig.yaml;az aks get-credentials --resource-group K8S --name aksdemocluster --file /Users/soumikdas/work/Rancher/aksconfig.yaml
 
+
+istioctl install --set profile=demo -y
+
 kubectl label namespace default istio-injection=enabled
 
 
+apply -f ~/work/istio-1.17.1/samples/addons
 
+##############
+
+k create secret docker-registry acr-secret --namespace default --docker-server=tempesb.azurecr.io --docker-username=f1f840bb-b126-49e4-926b-d51468a13cf3 --docker-password=max8Q~HnlsKBFkfl_3irCaPrYg2KJ.PGTKvEfaSU
+
+k apply -f sample.yaml
+
+k apply -f sample-gateway.yaml
+
+
+docker run -d --restart=unless-stopped \
+  -p 80:80 -p 443:443 \
+  --privileged \
+  rancher/rancher:latest
+
+
+### Set kubernetes secret from keyvault
+
+az group create --location "westus" --name "DemoKeyVault"
+
+az keyvault secret set --name value3 --vault-name "DemoKeyVaultESBMod" --value "from keyvault"
+
+az keyvault create --name "DemoKeyVaultESBMod" --resource-group "DemoKeyVault"
+
+APP_ID=$(az ad app create --display-name "external-secret-read" --query appId | tr -d \")
+
+APP_ID a5f8fd60-e781-4f19-a213-e13987c7ef4d
+
+SERVICE_PRINCIPAL=$(az ad sp create --id $APP_ID --query objectId | tr -d \")
+
+SERVICE_PRINCIPAL
+
+az ad app permission add --id $APP_ID --api-permissions f53da476-18e3-4152-8e01-aec403e6edc0=Scope --api cfa8b339-82a2-471a-a3c9-0fc0be7a4093
